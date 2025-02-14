@@ -1,7 +1,9 @@
 package com.menu.menu.controller;
 
 import com.menu.global.annotation.ExtractPayload;
-import jakarta.validation.Valid;
+import com.menu.menu.dto.MenuRequestDto;
+import com.menu.menu.dto.MenuResponseDto;
+import com.menu.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +28,8 @@ public class MenuApiController {
     private final MenuService menuService;
 
     @GetMapping("/{storeId}")
-    public ResponseEntity<List<MenuResponse>> readMenu(@PathVariable Long storeId) {
+    public ResponseEntity<List<MenuResponseDto>> readMenu(@PathVariable Long storeId) {
         return new ResponseEntity<>(menuService.readMenu(storeId), HttpStatus.OK);
-    }
-
-    @GetMapping("/{storeId}/{menuId}")
-    public ResponseEntity<MenuResponse> readSingleMenu(
-            @PathVariable("storeId") Long storeId,
-            @PathVariable("menuId") Long menuId
-    ) {
-        return new ResponseEntity<>(menuService.readSingleMenu(storeId, menuId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/{storeId}", consumes = MULTIPART_FORM_DATA_VALUE)    // multipart/form-data 강제
@@ -43,7 +37,7 @@ public class MenuApiController {
             @ExtractPayload Long ownerId,
             @PathVariable Long storeId,
             @RequestPart MultipartFile image,   // 변수명 key로 사용
-            @RequestPart MenuRequest request
+            @RequestPart MenuRequestDto request
     ) {
         return new ResponseEntity<>(menuService.uploadMenu(ownerId, storeId, image, request.title(), request.price()), HttpStatus.OK);
     }

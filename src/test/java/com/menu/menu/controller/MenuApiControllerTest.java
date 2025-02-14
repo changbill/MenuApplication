@@ -2,15 +2,20 @@ package com.menu.menu.controller;
 
 import com.menu.auth.exception.AuthErrorCode;
 import com.menu.common.ControllerTest;
+import com.menu.menu.dto.MenuResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.menu.common.fixture.TokenFixture.ACCESS_TOKEN;
 import static com.menu.common.fixture.TokenFixture.BEARER_PREFIX;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static reactor.core.publisher.Mono.when;
@@ -46,7 +51,9 @@ class MenuApiControllerTest extends ControllerTest {
         @DisplayName("readMenu")
         void readMenu() throws Exception {
             // given
-            when(menuService.readMenu(STORE_ID)).thenReturn();
+            doReturn(new ArrayList<>())
+                    .when(menuService)
+                    .readMenu(STORE_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
