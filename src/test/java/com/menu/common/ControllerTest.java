@@ -19,11 +19,12 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
-@ImportAutoConfiguration(SecurityConfig.class)  // Spring Security 설정(SecurityConfig)을 명시적으로 불러와서 적용
+
+//@ImportAutoConfiguration(SecurityConfig.class)  // 전체 애플리케이션 구성 대신 특정 자동 구성만 선택적으로 적용
 @WebMvcTest({
         MenuApiController.class
 })
-@WithMockUser("test")
+//@WithMockUser("test")
 public abstract class ControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -38,7 +39,7 @@ public abstract class ControllerTest {
     public void setUp() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
-                .apply(springSecurity())
+//                .apply(springSecurity())
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }

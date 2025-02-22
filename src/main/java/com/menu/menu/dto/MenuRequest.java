@@ -3,9 +3,8 @@ package com.menu.menu.dto;
 import lombok.Builder;
 
 @Builder
-public record MenuResponseDto(
+public record MenuRequest(
         String title,
-        Long price,
-        String photoUrl
+        Long price
 ) {
 }

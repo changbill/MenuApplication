@@ -1,8 +1,8 @@
 package com.menu.menu.controller;
 
 import com.menu.global.annotation.ExtractPayload;
-import com.menu.menu.dto.MenuRequestDto;
-import com.menu.menu.dto.MenuResponseDto;
+import com.menu.menu.dto.MenuRequest;
+import com.menu.menu.dto.MenuResponse;
 import com.menu.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,18 +28,18 @@ public class MenuApiController {
     private final MenuService menuService;
 
     @GetMapping("/{storeId}")
-    public ResponseEntity<List<MenuResponseDto>> readMenu(@PathVariable Long storeId) {
+    public ResponseEntity<List<MenuResponse>> readMenu(@PathVariable Long storeId) {
         return new ResponseEntity<>(menuService.readMenu(storeId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/{storeId}", consumes = MULTIPART_FORM_DATA_VALUE)    // multipart/form-data 강제
     public ResponseEntity<Long> uploadMenu(
-            @ExtractPayload Long ownerId,
             @PathVariable Long storeId,
             @RequestPart MultipartFile image,   // 변수명 key로 사용
-            @RequestPart MenuRequestDto request
+            @RequestPart MenuRequest request
     ) {
-        return new ResponseEntity<>(menuService.uploadMenu(ownerId, storeId, image, request.title(), request.price()), HttpStatus.OK);
+        menuService.uploadMenu(storeId, image, request.title(), request.price());
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping(value = "/{storeId}/{menuId}", consumes = MULTIPART_FORM_DATA_VALUE)
@@ -50,7 +50,7 @@ public class MenuApiController {
             @RequestPart MultipartFile image,
             @RequestPart MenuRequest request
     ) {
-        menuService.updateMenu(ownerId, storeId, menuId, image, request.title(), request.price());
+        menuService.updateMenu(storeId, menuId, image, request.title(), request.price());
         return ResponseEntity.ok().build();
     }
 
@@ -60,7 +60,7 @@ public class MenuApiController {
             @PathVariable Long storeId,
             @PathVariable Long menuId
     ) {
-        menuService.deleteMenu(ownerId, storeId, menuId);
+        menuService.deleteMenu(storeId, menuId);
         return ResponseEntity.ok().build();
     }
 }

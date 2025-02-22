@@ -3,6 +3,8 @@ package com.menu.auth;
 import static com.menu.common.fixture.TokenFixture.ACCESS_TOKEN;
 import static com.menu.common.fixture.TokenFixture.BEARER_PREFIX;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,17 +22,16 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 public class AuthControllerTest extends ControllerTest {
 
     @Nested
-    @DisplayName("Authorization Header에 token이 없으면 예외 발생")
-    class AuthorizationHeaderTests {
+    @DisplayName("Authorization 필요 API")
+    class AuthorizationNecessityTests {
 
         @Test
-        @DisplayName("메뉴 전체조회 API 테스트 [GET /api/menu/{storeId}]")
+        @DisplayName("[GET] Authorization Header에 token이 없으면 예외 발생")
         void MenuApiTest() throws Exception {
             final String BASE_URL = "/api/menu/{storeId}";
-            final Long STORE_ID = 1L;
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(BASE_URL, STORE_ID);
+            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(BASE_URL, anyLong());
 
             // then
             AuthErrorCode expectedError = AuthErrorCode.INVALID_PERMISSION;

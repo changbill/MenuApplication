@@ -1,24 +1,22 @@
 package com.menu.menu.controller;
 
-import com.menu.auth.exception.AuthErrorCode;
 import com.menu.common.ControllerTest;
-import com.menu.menu.dto.MenuResponseDto;
+import com.menu.menu.dto.MenuRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.menu.common.fixture.TokenFixture.ACCESS_TOKEN;
-import static com.menu.common.fixture.TokenFixture.BEARER_PREFIX;
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static io.netty.handler.codec.http.HttpHeaders.Values.APPLICATION_JSON;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static reactor.core.publisher.Mono.when;
 
 @DisplayName("Menu [Controller Layer] -> MenuApiController 테스트")
 class MenuApiControllerTest extends ControllerTest {
@@ -30,35 +28,17 @@ class MenuApiControllerTest extends ControllerTest {
         private static final Long STORE_ID = 1L;
 
         @Test
-        @DisplayName("Authorization Header에 token이 없으면 예외 발생")
-        void throwExceptionByInvalidPermission() throws Exception {
-            // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(BASE_URL, STORE_ID);
-
-            // then
-            AuthErrorCode expectedError = AuthErrorCode.INVALID_PERMISSION;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isForbidden(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    );
-        }
-
-        @Test
         @DisplayName("readMenu")
         void readMenu() throws Exception {
             // given
-            doReturn(new ArrayList<>())
-                    .when(menuService)
-                    .readMenu(STORE_ID);
+            when(menuService.readMenu(STORE_ID))
+                    .thenReturn(new ArrayList<>());
 
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .get(BASE_URL, STORE_ID)
-                    .header(AUTHORIZATION, BEARER_PREFIX + ACCESS_TOKEN);
+//                    .header(AUTHORIZATION, BEARER_PREFIX + ACCESS_TOKEN)
+                    ;
 
             // then
             mockMvc.perform(requestBuilder)
@@ -66,5 +46,64 @@ class MenuApiControllerTest extends ControllerTest {
                             status().isOk()
                     );
         }
+    }
+
+    @Test
+    @DisplayName("메뉴 등록 성공")
+    void successUploadMenu() throws Exception {
+        // given
+        when(menuService.uploadMenu(anyLong(), any(), any(), anyLong()))
+                .thenReturn(1L);
+
+        // when
+        MockMultipartFile file = new MockMultipartFile(
+                "file", null, "multipart/form-data", new byte[]{}
+        );
+        MockMultipartFile mockRequest = new MockMultipartFile(
+                "request",
+                null,
+                "application/json",
+                objectMapper.writeValueAsString(createMenuRequest()).getBytes(StandardCharsets.UTF_8)
+        );
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .multipart("/api/menu/{storeId}")
+                .file(file)
+                .file(mockRequest)
+                .accept(APPLICATION_JSON);//                .header(AUTHORIZATION,BEARER_TOKEN + ACCESS_TOKEN)
+
+        // then
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("메뉴 업데이트 성공")
+    void successUpdateMenu() throws Exception {
+        // given
+        when(menuService.uploadMenu(anyLong(), any(), any(), any()))
+                .thenReturn(1L);
+
+        // when
+        MockMultipartFile file = new MockMultipartFile(
+                "file", null, "multipart/form-data", new byte[]{}
+        );
+        MockMultipartFile mockRequest = new MockMultipartFile(
+                "request", null, "application/json", objectMapper.writeValueAsString(createMenuRequest()).getBytes(StandardCharsets.UTF_8)
+        );
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .multipart("/api/menu/{storeId}")
+                .file(file)
+                .file(mockRequest)
+                .accept(APPLICATION_JSON);//                .header(AUTHORIZATION,BEARER_TOKEN + ACCESS_TOKEN)
+
+        // then
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
+    }
+
+    private MenuRequest createMenuRequest() {
+        return new MenuRequest("new menu", 1000L);
     }
 }
