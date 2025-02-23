@@ -1,6 +1,7 @@
 package com.menu.file.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.menu.file.domain.Directory;
 import com.menu.file.exception.FileErrorCode;
@@ -29,6 +30,19 @@ public class FileService {
         validateFileExists(file);
         validateImage(file);
         return uploadFile(dir.getDirectory(), file);
+    }
+
+    public void deleteFiles(String photoUrl) {
+        if(photoUrl == null || photoUrl.isEmpty()) {
+            throw BaseException.type(INVALID_DIRECTORY);
+        }
+        String fileKey = photoUrl.substring(57);
+        try {
+            amazonS3.deleteObject(bucket, fileKey);
+        } catch (AmazonS3Exception e) {
+            log.error(e.getMessage());
+            System.exit(1);
+        }
     }
 
     private String uploadFile(String dir, MultipartFile file) {

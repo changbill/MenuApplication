@@ -50,7 +50,7 @@ public class MenuApiController {
             @RequestPart MultipartFile image,
             @RequestPart MenuRequest request
     ) {
-        menuService.updateMenu(storeId, menuId, image, request.title(), request.price());
+        menuService.updateMenu(ownerId, storeId, menuId, image, request.title(), request.price());
         return ResponseEntity.ok().build();
     }
 
@@ -60,7 +60,7 @@ public class MenuApiController {
             @PathVariable Long storeId,
             @PathVariable Long menuId
     ) {
-        menuService.deleteMenu(storeId, menuId);
+        menuService.deleteMenu(ownerId, storeId, menuId);
         return ResponseEntity.ok().build();
     }
 }

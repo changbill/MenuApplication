@@ -1,4 +1,4 @@
-package com.menu.store.service;
+package com.menu.store.repository;
 
 import com.menu.store.domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;

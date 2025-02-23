@@ -8,25 +8,28 @@ import com.menu.menu.dto.MenuResponse;
 import com.menu.menu.repository.MenuRepository;
 import com.menu.store.domain.Store;
 import com.menu.store.exception.StoreErrorCode;
-import com.menu.store.service.StoreRepository;
+import com.menu.store.service.StoreFindService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MenuService {
     private final MenuRepository menuRepository;
-    private final StoreRepository storeRepository;
     private final FileService fileService;
+    private final MenuFindService menuFindService;
+    private final StoreFindService storeFindService;
 
+    @Transactional(readOnly = true)
     public List<MenuResponse> readMenu(Long storeId) {
-        List<Menu> menus = menuRepository.readMenuByStoreId(storeId).orElse(new ArrayList<>());
+        List<Menu> menus = menuFindService.findAllByStoreId(storeId);
 
         return menus.stream().map(
                         menu -> MenuResponse.builder()
@@ -44,28 +47,52 @@ public class MenuService {
             String title,
             Long price
     ) {
-        Store store = storeRepository.findById(storeId).orElseThrow(() -> BaseException.type(StoreErrorCode.STORE_NOT_FOUND));
+        Store store = storeFindService.findById(storeId);
 
         String fileUrl = null;
-        if(image != null) {
+        if(image != null)
             fileUrl = fileService.uploadImages(Directory.MENU, image);
-        }
 
         Menu menu = Menu.of(title, price, fileUrl, store);
         return menuRepository.save(menu).getId();
     }
 
     public void updateMenu(
+            Long ownerId,
             Long storeId,
             Long menuId,
             MultipartFile image,
             String title,
             Long price
     ) {
+        Store store = storeFindService.findById(storeId);
+        Menu menu = menuFindService.findById(menuId);
+        validateOwner(store, ownerId);
 
+        String fileUrl = null;
+        if(image != null)
+            fileUrl = fileService.uploadImages(Directory.MENU, image);
+
+        if(store.getPhotoUrl() != null)
+            fileService.deleteFiles(store.getPhotoUrl());
+
+        menu.update(title, price, fileUrl);
     }
 
-    public void deleteMenu(Long storeId, Long menuId) {
+    public void deleteMenu(Long ownerId, Long storeId, Long menuId) {
+        Store store = storeFindService.findById(storeId);
+        validateOwner(store, ownerId);
+        Menu menu = menuFindService.findById(menuId);
 
+        if(store.getPhotoUrl() != null)
+            fileService.deleteFiles(store.getPhotoUrl());
+
+        menuRepository.deleteById(menuId);
+    }
+
+    private void validateOwner(Store store, Long ownerId) {
+        if(!store.getOwner().getId().equals(ownerId)) {
+            throw BaseException.type(StoreErrorCode.USER_IS_NOT_OWNER);
+        }
     }
 }

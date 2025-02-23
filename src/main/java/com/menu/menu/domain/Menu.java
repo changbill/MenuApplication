@@ -16,12 +16,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -66,5 +64,11 @@ public class Menu extends BaseTimeEntity {
 
     public static Menu of(String title, Long price, String photoUrl, Store store) {
         return new Menu(title, price, photoUrl, store);
+    }
+
+    public void update(String title, Long price, String photoUrl) {
+        this.title = title;
+        this.price = price;
+        this.photoUrl = photoUrl;
     }
 }
