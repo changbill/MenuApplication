@@ -1,7 +1,7 @@
 package com.menu.global.annotation;
 
 import com.menu.auth.exception.AuthErrorCode;
-import com.menu.auth.security.JwtProvider;
+import com.menu.auth.security.jwt.JwtProvider;
 import com.menu.auth.utils.AuthorizationExtractor;
 import com.menu.global.exception.BaseException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class ExtractTokenArgumentResolver implements HandlerMethodArgumentResolv
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = AuthorizationExtractor.extractToken(request)
                 .orElseThrow(() -> BaseException.type(AuthErrorCode.INVALID_PERMISSION));
-        jwtProvider.validToken(token);
+        jwtProvider.validateToken(token);
         return token;
     }
 }

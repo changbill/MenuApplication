@@ -1,6 +1,7 @@
 package com.menu.store.domain;
 
 import com.menu.global.BaseTimeEntity;
+import com.menu.member.domain.Member;
 import com.menu.menu.domain.Menu;
 import com.menu.owner.domain.Owner;
 import jakarta.persistence.CascadeType;
@@ -48,18 +49,18 @@ public class Store extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
-    private Owner owner;
+    private Member owner;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> menus = new ArrayList<>();
 
-    private Store(String name, String photoUrl, Owner owner) {
+    private Store(String name, String photoUrl, Member owner) {
         this.name = name;
         this.photoUrl = photoUrl;
         this.owner = owner;
     }
 
-    public static Store of(String name, String photoUrl, Owner owner) {
+    public static Store of(String name, String photoUrl, Member owner) {
         return new Store(name, photoUrl, owner);
     }
 }

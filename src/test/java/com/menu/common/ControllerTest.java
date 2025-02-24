@@ -2,15 +2,15 @@ package com.menu.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.menu.auth.security.jwt.JwtProvider;
+import com.menu.file.service.FileService;
 import com.menu.menu.controller.MenuApiController;
+import com.menu.menu.service.MenuFindService;
 import com.menu.menu.service.MenuService;
+import com.menu.store.service.StoreFindService;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,9 +32,6 @@ public abstract class ControllerTest {
     @Autowired
     protected MockMvc mockMvc;
 
-    @Autowired
-    protected ObjectMapper objectMapper;
-
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders
@@ -44,8 +41,23 @@ public abstract class ControllerTest {
                 .build();
     }
 
+    @Autowired
+    protected ObjectMapper objectMapper;
+
+    @MockitoBean
+    protected JwtProvider jwtProvider;
+
+    @MockitoBean
+    protected FileService fileService;
+
     @MockitoBean
     protected MenuService menuService;
+
+    @MockitoBean
+    protected MenuFindService menuFindService;
+
+    @MockitoBean
+    protected StoreFindService storeFindService;
 
     protected String convertObjectToJson(Object data) throws JsonProcessingException {
         return objectMapper.writeValueAsString(data);
