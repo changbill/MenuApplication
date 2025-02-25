@@ -4,7 +4,6 @@ import com.menu.global.BaseTimeEntity;
 import com.menu.store.domain.Store;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +17,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,7 @@ public class Member extends BaseTimeEntity {
     private String name;
 
     @NotNull
-    private String nickname;
-
-    @NotNull
-    private LocalDateTime birthDate;
+    private String email;
 
     private Role role;
 
@@ -52,6 +49,9 @@ public class Member extends BaseTimeEntity {
     @Column(length = 500)
     private String profileImageUrl;
 
+    @NotNull
+    private LocalDate birthday;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
@@ -60,32 +60,32 @@ public class Member extends BaseTimeEntity {
 
     private Member(
             String name,
-            String nickname,
-            LocalDateTime birthDate,
+            String email,
             Role role,
             SocialType socialType,
             String socialId,
-            String profileImageUrl
+            String profileImageUrl,
+            LocalDate birthday
     ) {
         this.name = name;
-        this.nickname = nickname;
-        this.birthDate = birthDate;
+        this.email = email;
         this.role = role;
         this.socialType = socialType;
         this.socialId = socialId;
         this.profileImageUrl = profileImageUrl;
+        this.birthday = birthday;
     }
 
     public static Member of(
             String name,
-            String nickname,
-            LocalDateTime birthDate,
+            String email,
             Role role,
             SocialType socialType,
             String socialId,
-            String profileImageUrl
+            String profileImageUrl,
+            LocalDate birthday
     ) {
-        return new Member(name, nickname, birthDate, role, socialType, socialId, profileImageUrl);
+        return new Member(name, email, role, socialType, socialId, profileImageUrl, birthday);
     }
 
     public boolean isOwner() {

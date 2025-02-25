@@ -1,6 +1,8 @@
 package com.menu.auth.dto;
 
+import com.menu.member.domain.Member;
 import com.menu.member.domain.Role;
+import com.menu.member.dto.MemberResponse;
 import org.apache.catalina.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,22 +18,38 @@ import java.util.Map;
 
 public record UserPrincipal(
         String email,
-        String password,
-        Collection<? extends GrantedAuthority> authorities,
-        Map<String, Object> attributes
+        Collection<? extends GrantedAuthority> authorities, // 사용자가 가진 권한(역할) 리스트
+        Map<String, Object> attributes      // OAuth2 인증을 통해 얻은 정보
 ) implements UserDetails, OAuth2User, OidcUser {
 
-    public static UserPrincipal of(String email, String password, Map<String, Object> attributes) {
+    // Owner
+    public static UserPrincipal of(
+            String email,
+            Collection<? extends GrantedAuthority> authorities,
+            Map<String, Object> attributes
+    ) {
         return new UserPrincipal(
                 email,
-                password,
+                authorities,
+                attributes
+        );
+    }
+
+    // member
+    public static UserPrincipal of(String email, Map<String, Object> attributes) {
+        return new UserPrincipal(
+                email,
                 Collections.singletonList(new SimpleGrantedAuthority(Role.USER.getValue())),
                 attributes
         );
     }
 
-    public static UserPrincipal of(String email, String password, Collection<? extends GrantedAuthority> authorities) {
-        return new UserPrincipal(email, password, authorities, Map.of());
+    public static UserPrincipal of(String email) {
+        return of(email, Map.of());
+    }
+
+    public static UserPrincipal from(MemberResponse dto) {
+        return of(dto.email());
     }
 
     @Override

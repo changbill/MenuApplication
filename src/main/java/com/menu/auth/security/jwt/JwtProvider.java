@@ -38,10 +38,12 @@ public class JwtProvider {
     @Value("app.auth.refreshExp")
     private long refreshExp;
 
+    // accessToken: 권한 부여
     public AuthToken createAccessToken(String email, String role) {
         return new AuthToken(email, role, salt, accessExp);
     }
 
+    // refreshToken: 인증으로 accessToken을 재발급 받는것이 주 관심사기 때문에 role을 필요로 하지 않는다.
     public AuthToken createRefreshToken(String email) {
         return new AuthToken(email, salt, refreshExp);
     }
