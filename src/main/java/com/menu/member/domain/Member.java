@@ -88,6 +88,8 @@ public class Member extends BaseTimeEntity {
         return new Member(name, email, role, socialType, socialId, profileImageUrl, birthday);
     }
 
+
+
     public boolean isOwner() {
         return this.role == Role.OWNER;
     }

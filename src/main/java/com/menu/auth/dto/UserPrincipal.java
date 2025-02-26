@@ -52,6 +52,10 @@ public record UserPrincipal(
         return of(dto.email());
     }
 
+    public static UserPrincipal from(MemberResponse dto, Map<String, Object> attributes) {
+        return of(dto.email(), attributes);
+    }
+
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
@@ -64,7 +68,7 @@ public record UserPrincipal(
 
     @Override
     public String getPassword() {
-        return password;
+        return "";
     }
 
     @Override

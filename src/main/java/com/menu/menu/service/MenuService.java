@@ -42,12 +42,14 @@ public class MenuService {
     }
 
     public Long uploadMenu(
+            String email,
             Long storeId,
             MultipartFile image,
             String title,
             Long price
     ) {
         Store store = storeFindService.findById(storeId);
+        validateOwner(store, email);
 
         String fileUrl = null;
         if(image != null)
@@ -58,7 +60,7 @@ public class MenuService {
     }
 
     public void updateMenu(
-            Long ownerId,
+            String email,
             Long storeId,
             Long menuId,
             MultipartFile image,
@@ -66,8 +68,7 @@ public class MenuService {
             Long price
     ) {
         Store store = storeFindService.findById(storeId);
-        Menu menu = menuFindService.findById(menuId);
-        validateOwner(store, ownerId);
+        validateOwner(store, email);
 
         String fileUrl = null;
         if(image != null)
@@ -76,12 +77,13 @@ public class MenuService {
         if(store.getPhotoUrl() != null)
             fileService.deleteFiles(store.getPhotoUrl());
 
+        Menu menu = menuFindService.findById(menuId);
         menu.update(title, price, fileUrl);
     }
 
-    public void deleteMenu(Long ownerId, Long storeId, Long menuId) {
+    public void deleteMenu(String email, Long storeId, Long menuId) {
         Store store = storeFindService.findById(storeId);
-        validateOwner(store, ownerId);
+        validateOwner(store, email);
         Menu menu = menuFindService.findById(menuId);
 
         if(store.getPhotoUrl() != null)
@@ -90,8 +92,8 @@ public class MenuService {
         menuRepository.deleteById(menuId);
     }
 
-    private void validateOwner(Store store, Long ownerId) {
-        if(!store.getOwner().getId().equals(ownerId)) {
+    private void validateOwner(Store store, String email) {
+        if(!store.getOwner().getEmail().equals(email)) {
             throw BaseException.type(StoreErrorCode.USER_IS_NOT_OWNER);
         }
     }

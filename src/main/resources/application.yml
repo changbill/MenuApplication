@@ -118,6 +118,9 @@ cors:
   max-age: 3600
 
 app:
+  auth:
+    accessExp: 3600000
+    refreshExp: 604800000
   oauth2:
     authorizedRedirectUris:
       # - https://myapp.com/oauth/callback 과 같이 redirect할 uri들 넣기

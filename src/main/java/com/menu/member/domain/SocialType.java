@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestPart;
 
+import java.util.Optional;
+
 @Getter
 @RequiredArgsConstructor
 public enum SocialType implements EnumStandard {
@@ -17,6 +19,16 @@ public enum SocialType implements EnumStandard {
 
     private final String socialType;
     private final String socialTitle;
+
+    public static Optional<SocialType> getSocialType(String name) {
+        String upperCaseName = name.toUpperCase();
+        for (SocialType socialType : SocialType.values()) {
+            if (socialType.getSocialType().equals(upperCaseName)) {
+                return Optional.of(socialType);
+            }
+        }
+        return Optional.empty();
+    }
 
     @Override
     public String getValue() {

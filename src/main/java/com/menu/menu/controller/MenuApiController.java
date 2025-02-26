@@ -34,33 +34,34 @@ public class MenuApiController {
 
     @PostMapping(value = "/{storeId}", consumes = MULTIPART_FORM_DATA_VALUE)    // multipart/form-data 강제
     public ResponseEntity<Long> uploadMenu(
+            @ExtractPayload String email,
             @PathVariable Long storeId,
             @RequestPart MultipartFile image,   // 변수명 key로 사용
             @RequestPart MenuRequest request
     ) {
-        menuService.uploadMenu(storeId, image, request.title(), request.price());
+        menuService.uploadMenu(email, storeId, image, request.title(), request.price());
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping(value = "/{storeId}/{menuId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateMenu(
-            @ExtractPayload Long ownerId,
+            @ExtractPayload String email,
             @PathVariable Long storeId,
             @PathVariable Long menuId,
             @RequestPart MultipartFile image,
             @RequestPart MenuRequest request
     ) {
-        menuService.updateMenu(ownerId, storeId, menuId, image, request.title(), request.price());
+        menuService.updateMenu(email, storeId, menuId, image, request.title(), request.price());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{storeId}/{menuId}")
     public ResponseEntity<Void> deleteMenu(
-            @ExtractPayload Long ownerId,
+            @ExtractPayload String email,
             @PathVariable Long storeId,
             @PathVariable Long menuId
     ) {
-        menuService.deleteMenu(ownerId, storeId, menuId);
+        menuService.deleteMenu(email, storeId, menuId);
         return ResponseEntity.ok().build();
     }
 }

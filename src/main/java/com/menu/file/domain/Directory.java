@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Directory {
     MENU("menu"),
+    MEMBER("member"),
     ;
 
     private final String directory;

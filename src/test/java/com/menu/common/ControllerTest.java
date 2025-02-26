@@ -33,7 +33,7 @@ public abstract class ControllerTest {
     protected MockMvc mockMvc;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
 //                .apply(springSecurity())

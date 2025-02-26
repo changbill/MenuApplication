@@ -1,11 +1,6 @@
 package com.menu.auth;
 
-import static com.menu.common.fixture.TokenFixture.ACCESS_TOKEN;
-import static com.menu.common.fixture.TokenFixture.BEARER_PREFIX;
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
