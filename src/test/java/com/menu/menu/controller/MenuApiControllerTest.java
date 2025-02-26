@@ -3,7 +3,9 @@ package com.menu.menu.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.menu.common.ControllerTest;
 import com.menu.common.TokenService;
+import com.menu.common.fixture.MemberFixture;
 import com.menu.global.exception.BaseException;
+import com.menu.member.domain.Role;
 import com.menu.menu.dto.MenuRequest;
 import com.menu.store.exception.StoreErrorCode;
 import jakarta.annotation.PostConstruct;
@@ -21,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static com.menu.common.TokenService.BEARER_TOKEN;
+import static com.menu.common.fixture.MemberFixture.CHANGHEON;
 import static io.netty.handler.codec.http.HttpHeaders.Values.APPLICATION_JSON;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,20 +38,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Menu [Controller Layer] -> MenuApiController 테스트")
-@RequiredArgsConstructor
 class MenuApiControllerTest extends ControllerTest {
-    private final TokenService tokenService;
-
     private static final Long STORE_ID = 1L;
     private static final Long MENU_ID = 1L;
-    private String accessToken = null;
-    private String refreshToken = null;
 
-    @BeforeEach
-    void setUp() {
-        accessToken = tokenService.generateAccessToken();
-        refreshToken = tokenService.generateRefreshToken();
-    }
+//    private String accessToken = null;
+//    private String refreshToken = null;
+//
+//    @BeforeEach
+//    void setUp() {
+//        accessToken = jwtProvider.createAccessToken(
+//                CHANGHEON.getEmail(),
+//                CHANGHEON.getRole().getValue()
+//        ).getToken();
+//        refreshToken = jwtProvider.createRefreshToken(CHANGHEON.getEmail()).getToken();
+//    }
 
     @Test
     @DisplayName("메뉴 전체조회 [GET /api/menu/{storeId}]")
@@ -85,7 +89,7 @@ class MenuApiControllerTest extends ControllerTest {
                 .multipart("/api/menu/{storeId}", STORE_ID)
                 .file(file)
                 .file(mockRequest)
-                .header(AUTHORIZATION, BEARER_TOKEN + accessToken)
+//                .header(AUTHORIZATION, BEARER_TOKEN + accessToken)
                 .accept(APPLICATION_JSON);
 
         // then

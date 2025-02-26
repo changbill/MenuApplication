@@ -4,7 +4,6 @@ import com.menu.auth.exception.RestAuthenticationEntryPoint;
 import com.menu.auth.service.CustomOAuth2UserService;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,13 +12,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.reactive.config.EnableWebFlux;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
-    private final CustomOAuth2UserService oAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
     private final AuthenticationConfig authenticationConfig;
 
     private static final String[] AUTH_WHITELIST = {
@@ -59,7 +57,7 @@ public class SecurityConfig {
                                 config.authorizationRequestRepository(authenticationConfig.authorizationRequestCookieRepository())
                                         .baseUri("/oauth2/authorization")
                         )
-                                .userInfoEndpoint(config -> config.userService(oAuth2UserService))
+                                .userInfoEndpoint(config -> config.userService(customOAuth2UserService))
                                 .redirectionEndpoint(config -> config.baseUri("/*/oauth2/code/*"))
                                 .successHandler(authenticationConfig.oAuth2AuthenticationSuccessHandler())
                                 .failureHandler(authenticationConfig.oAuth2AuthenticationFailureHandler())
