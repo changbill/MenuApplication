@@ -2,6 +2,7 @@ package com.menu.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.menu.auth.config.AuthenticationConfig;
 import com.menu.auth.config.SecurityConfig;
 import com.menu.auth.security.jwt.JwtProvider;
 import com.menu.auth.service.CustomOAuth2UserService;
@@ -24,7 +25,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 
-@ImportAutoConfiguration(SecurityConfig.class)  // 전체 애플리케이션 구성 대신 특정 자동 구성만 선택적으로 적용
+@ImportAutoConfiguration({
+        SecurityConfig.class,
+        AuthenticationConfig.class
+})  // 전체 애플리케이션 구성 대신 특정 자동 구성만 선택적으로 적용
 @WebMvcTest({
         MenuApiController.class
 })

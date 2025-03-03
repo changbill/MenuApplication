@@ -17,18 +17,11 @@ import org.springframework.context.annotation.Configuration;
 public class AmazonS3Config {
     private final AwsCredentialsProperties awsCredentialsProperties;
 
-    @PostConstruct
-    public void init() {
-        log.info("Access Key: " + awsCredentialsProperties.getCredentials().getAccessKey());
-        log.info("Secret Key: " + awsCredentialsProperties.getCredentials().getSecretKey());
-        log.info("Region: " + awsCredentialsProperties.getRegion().getStatik());
-    }
-
     @Bean
     public AmazonS3 amazonS3Client() {
         String accessKey = awsCredentialsProperties.getCredentials().getAccessKey();
         String secretKey = awsCredentialsProperties.getCredentials().getSecretKey();
-        String region = awsCredentialsProperties.getRegion().getStatik();
+        String region = awsCredentialsProperties.getRegion().getRegionStatic();
 
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 

@@ -16,8 +16,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class JwtProvider {
     private final Environment environment;
 

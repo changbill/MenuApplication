@@ -2,16 +2,9 @@ package com.menu.menu.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.menu.common.ControllerTest;
-import com.menu.common.TokenService;
-import com.menu.common.fixture.MemberFixture;
 import com.menu.global.exception.BaseException;
-import com.menu.member.domain.Role;
 import com.menu.menu.dto.MenuRequest;
 import com.menu.store.exception.StoreErrorCode;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.Token;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,10 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import static com.menu.common.TokenService.BEARER_TOKEN;
-import static com.menu.common.fixture.MemberFixture.CHANGHEON;
 import static io.netty.handler.codec.http.HttpHeaders.Values.APPLICATION_JSON;
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
