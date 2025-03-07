@@ -1,7 +1,7 @@
 package com.menu.store.domain;
 
 import com.menu.global.BaseTimeEntity;
-import com.menu.member.domain.Member;
+import com.menu.user.domain.Member;
 import com.menu.menu.domain.Menu;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

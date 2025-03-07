@@ -1,6 +1,6 @@
 package com.menu.common;
 
-import com.menu.auth.security.jwt.JwtProvider;
+import com.menu.auth.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

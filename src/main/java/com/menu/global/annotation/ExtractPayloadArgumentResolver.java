@@ -1,7 +1,7 @@
 package com.menu.global.annotation;
 
 import com.menu.auth.exception.AuthErrorCode;
-import com.menu.auth.security.jwt.JwtProvider;
+import com.menu.auth.utils.JwtProvider;
 import com.menu.auth.utils.AuthorizationExtractor;
 import com.menu.global.exception.BaseException;
 import jakarta.servlet.http.HttpServletRequest;

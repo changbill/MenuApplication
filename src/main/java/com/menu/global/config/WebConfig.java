@@ -1,6 +1,6 @@
 package com.menu.global.config;
 
-import com.menu.auth.security.jwt.JwtProvider;
+import com.menu.auth.utils.JwtProvider;
 import com.menu.global.annotation.ExtractPayloadArgumentResolver;
 import com.menu.global.annotation.ExtractTokenArgumentResolver;
 import lombok.RequiredArgsConstructor;

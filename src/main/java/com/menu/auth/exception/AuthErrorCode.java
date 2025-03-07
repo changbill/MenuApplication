@@ -14,7 +14,7 @@ public enum AuthErrorCode implements ErrorCode {
     INVALID_SOCIAL_TYPE(HttpStatus.BAD_REQUEST, "AUTH_004", "잘못된 소셜 타입입니다."),
     AUTH_INVALID_REDIRECT_URI(HttpStatus.UNAUTHORIZED, "AUTH_005", "인증되지 않은 redirect URI입니다."),
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_006", "OAuth2 제공자에서 Email을 받지 못했습니다."),
-    ;
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_007", "리프레시 토큰을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String errorCode;

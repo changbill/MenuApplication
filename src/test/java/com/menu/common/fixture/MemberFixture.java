@@ -1,8 +1,8 @@
 package com.menu.common.fixture;
 
-import com.menu.member.domain.Member;
-import com.menu.member.domain.Role;
-import com.menu.member.domain.SocialType;
+import com.menu.user.domain.Member;
+import com.menu.user.domain.Role;
+import com.menu.user.domain.SocialType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
