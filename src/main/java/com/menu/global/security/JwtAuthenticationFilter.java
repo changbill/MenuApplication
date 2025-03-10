@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 log.info("{ JwtAuthenticationFilter } : userId - "+userId);
 
                 if(!userFindService.existsById(userId)) {
-                    log.info("{ JwtAuthenticationFilter } : 토큰에 추출된 uuid를 가진 회원 없음");
+                    log.info("{ JwtAuthenticationFilter } : 토큰에 추출된 id를 가진 회원 없음");
                     throw BaseException.type(AuthErrorCode.USERID_NOT_FOUND);
                 }
                 User user = userFindService.findById(userId);

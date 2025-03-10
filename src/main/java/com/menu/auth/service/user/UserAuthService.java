@@ -44,7 +44,7 @@ public class UserAuthService {
     @Transactional
     public UserLoginResponseDto login(@Valid UserLoginRequestDto requestDto) {
         log.info("{ UserAuthService } : User 로그인 진입");
-        User user = userFindService.findByEmail(requestDto.email());
+        User user = userFindService.findByEmailAndSocialType(requestDto.email(), requestDto.socialType());
 
         String accessToken = jwtProvider.createAccessToken(user.getId(), user.getRole());
         String refreshToken = jwtProvider.createRefreshToken(user.getId(), user.getRole());
