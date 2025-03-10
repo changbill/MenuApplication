@@ -23,4 +23,8 @@ public class UserFindService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> BaseException.type(UserErrorCode.MEMBER_NOT_FOUND));
     }
+
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
 }

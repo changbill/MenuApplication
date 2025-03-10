@@ -4,7 +4,9 @@ import com.menu.global.annotation.ExtractPayload;
 import com.menu.menu.dto.MenuRequest;
 import com.menu.menu.dto.MenuResponse;
 import com.menu.menu.service.MenuService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +23,8 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
+@Slf4j
+@Tag(name = "Menu", description = "MenuController")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/menu")
@@ -29,6 +33,7 @@ public class MenuApiController {
 
     @GetMapping("/{storeId}")
     public ResponseEntity<List<MenuResponse>> readMenu(@PathVariable Long storeId) {
+        log.info("{ MenuController } : Menu 조회 진입");
         return new ResponseEntity<>(menuService.readMenu(storeId), HttpStatus.OK);
     }
 
@@ -39,7 +44,9 @@ public class MenuApiController {
             @RequestPart MultipartFile image,   // 변수명 key로 사용
             @RequestPart MenuRequest request
     ) {
+        log.info("{ MenuController } : Menu 생성 진입");
         menuService.uploadMenu(email, storeId, image, request.title(), request.price());
+        log.info("{ MenuController } : Menu 생성 성공");
         return ResponseEntity.ok().build();
     }
 
@@ -51,7 +58,9 @@ public class MenuApiController {
             @RequestPart MultipartFile image,
             @RequestPart MenuRequest request
     ) {
+        log.info("{ MenuController } : Menu 수정 진입");
         menuService.updateMenu(email, storeId, menuId, image, request.title(), request.price());
+        log.info("{ MenuController } : Menu 수정 성공");
         return ResponseEntity.ok().build();
     }
 
@@ -61,7 +70,9 @@ public class MenuApiController {
             @PathVariable Long storeId,
             @PathVariable Long menuId
     ) {
+        log.info("{ MenuController } : Menu 삭제 진입");
         menuService.deleteMenu(email, storeId, menuId);
+        log.info("{ MenuController } : Menu 삭제 성공");
         return ResponseEntity.ok().build();
     }
 }

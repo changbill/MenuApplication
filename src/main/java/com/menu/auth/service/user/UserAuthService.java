@@ -1,8 +1,9 @@
-package com.menu.auth.service;
+package com.menu.auth.service.user;
 
 import com.menu.auth.dto.request.UserSignupRequestDto;
 import com.menu.auth.dto.request.UserLoginRequestDto;
 import com.menu.auth.dto.response.UserLoginResponseDto;
+import com.menu.auth.service.TokenService;
 import com.menu.auth.utils.JwtProvider;
 import com.menu.user.domain.User;
 import com.menu.user.domain.Role;

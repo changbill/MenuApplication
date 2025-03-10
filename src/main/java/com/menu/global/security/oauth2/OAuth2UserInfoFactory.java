@@ -1,4 +1,4 @@
-package com.menu.global.security;
+package com.menu.global.security.oauth2;
 
 import com.menu.auth.exception.AuthErrorCode;
 import com.menu.global.exception.BaseException;

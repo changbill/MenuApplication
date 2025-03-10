@@ -1,6 +1,7 @@
 package com.menu.auth;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,31 +14,29 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@DisplayName("Authorization Controller 테스트")
+@DisplayName("Auth [Controller Layer] -> AuthController 테스트")
 public class AuthControllerTest extends ControllerTest {
 
-    @Nested
-    @DisplayName("Authorization 필요 API")
-    class AuthorizationNecessityTests {
 
-        @Test
-        @DisplayName("[GET] Authorization Header에 token이 없으면 예외 발생")
-        void MenuApiTest() throws Exception {
-            final String BASE_URL = "/api/menu/{storeId}";
+    @Test
+    @DisplayName("회원가입에 성공한다")
+    void success() throws Exception {
+        // given
+        doReturn()
+                .when(ownerAuthService)
+                .signup(any());
 
-            // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(BASE_URL, anyLong());
+        // when
+        final ParentsSignupRequestDto request = createParentsSignupRequestDto();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(BASE_URL)
+                .contentType(APPLICATION_JSON)
+                .content(convertObjectToJson(request));
 
-            // then
-            AuthErrorCode expectedError = AuthErrorCode.INVALID_PERMISSION;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isForbidden(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    );
-        }
+        // then
+        mockMvc.perform(requestBuilder)
+                .andExpectAll(
+                        status().isOk()
+                );
     }
 }

@@ -1,4 +1,4 @@
-package com.menu.global.security;
+package com.menu.global.security.oauth2;
 
 import java.util.Map;
 

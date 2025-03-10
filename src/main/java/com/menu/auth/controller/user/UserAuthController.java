@@ -1,10 +1,10 @@
-package com.menu.auth.controller;
+package com.menu.auth.controller.user;
 
 import com.menu.auth.dto.request.UserLoginRequestDto;
 import com.menu.auth.dto.request.UserSignupRequestDto;
 import com.menu.auth.dto.response.UserLoginResponseDto;
 import com.menu.global.annotation.ExtractPayload;
-import com.menu.auth.service.UserAuthService;
+import com.menu.auth.service.user.UserAuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
